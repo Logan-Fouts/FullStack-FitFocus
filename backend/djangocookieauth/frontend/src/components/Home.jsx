@@ -46,18 +46,15 @@ export const Home = () => {
     return (
         <div className="flex flex-col w-full min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100">
             <Navbar />
-            {/* Main content area with responsive padding */}
             <div className="flex-grow flex flex-col p-4 md:p-8 space-y-8">
-                {/* Welcome card with improved styling */}
                 <div className="bg-white rounded-lg shadow-lg p-6 md:p-8 transition-all duration-300 hover:shadow-2xl">
                     <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome</h1>
                     <h2 className="text-2xl font-semibold text-indigo-600">
                         {username ? username : 'Anonymous'}
                     </h2>
                 </div>
-                {/* Calorie tracker component */}
                 <CalorieTracker className="bg-white rounded-lg shadow-lg p-6 md:p-8" />
-                <RoutineList routines={routines} />
+                <RoutineList routines={routines} workoutMode={true} />
             </div>
         </div>
     )
