@@ -12,7 +12,7 @@ const ExerciseList = ({ exercises }) => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">Exercise List</h1>
+      <h1 className="text-3xl font-bold mb-4 text-gray-800">Exercise List</h1>
       <input
         type="text"
         placeholder="Filter exercises..."
@@ -24,7 +24,7 @@ const ExerciseList = ({ exercises }) => {
         {filteredExercises.map(exercise => (
           <div key={exercise.id} className="bg-white shadow-lg rounded-lg overflow-hidden">
             <div className="p-4">
-              <h2 className="text-xl font-semibold mb-2">{exercise.name}</h2>
+              <h2 className="text-xl font-semibold mb-2 text-gray-600">{exercise.name}</h2>
               {/* <p className="text-gray-600 mb-2">{exercise.description}</p> */}
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm font-medium text-blue-600">{exercise.muscle_group}</span>
@@ -38,7 +38,7 @@ const ExerciseList = ({ exercises }) => {
                   rel="noopener noreferrer"
                   className="inline-flex items-center text-blue-500 hover:underline"
                 >
-                  View Resource
+                  View
                   <ExternalLink size={16} className="ml-1" />
                 </a>
               )}

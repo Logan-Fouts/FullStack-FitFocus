@@ -40,3 +40,13 @@ class Exercise(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.get_exercise_type_display()})"
+
+class Routine(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    day = models.CharField(max_length=100)  # This will store the days as a comma-separated string
+    description = models.TextField()
+    exercises = models.ManyToManyField('Exercise', related_name='routines')
+
+    def __str__(self):
+        return self.name

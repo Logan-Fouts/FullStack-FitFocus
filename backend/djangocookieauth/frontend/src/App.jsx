@@ -6,6 +6,8 @@ import { Home } from './components/Home';
 import { Register } from './components/Register';
 import Navbar from './components/Navbar';
 import AddExercise from './components/AddExercise';
+import AddRoutine from './components/AddRoutine';
+import { Leaf } from 'lucide-react';
 
 const cookies = new Cookies();
 
@@ -131,16 +133,20 @@ class App extends React.Component {
     if (!this.state.isAuthenticated && !this.state.isRegistering) {
       return (
         <Router>
-          <div className="container mx-auto mt-8 max-w-md px-4">
-            <h1 className="text-4xl font-bold text-center text-gray-100 mb-8">Fit Focus</h1>
-            <form onSubmit={this.login} className="bg-gray-800 shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
+          <div className="flex flex-col w-full min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100 justify-center items-center">
+            <div className='flex'>
+              <Leaf size={40} className='text-gray-800 mr-2'/>
+              <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">Fit Focus</h1>
+            </div>
+            <form onSubmit={this.login} className="shadow-2xl rounded-lg px-8 pt-6 pb-8 mb-4 w-10/12">
+              <h1 className="text-2xl font-bold text-center text-gray-700 mb-8">Login</h1>
               <div className="mb-4">
-                <label className="block text-gray-300 text-sm font-bold mb-2 text-left" htmlFor="username">
+                <label className="block text-gray-700 text-sm font-bold mb-2 text-left" htmlFor="username">
                   Username:
                 </label>
                 <input
                   type="text"
-                  className="shadow appearance-none bg-gray-700 border border-gray-600 rounded w-full py-2 px-3 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="text-black shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   id="username"
                   name="username"
                   value={this.state.username}
@@ -149,12 +155,12 @@ class App extends React.Component {
                 />
               </div>
               <div className="mb-6">
-                <label className="block text-gray-300 text-sm font-bold mb-2 text-left" htmlFor="password">
+                <label className="block text-gray-700 text-sm font-bold mb-2 text-left" htmlFor="password">
                   Password:
                 </label>
                 <input
                   type="password"
-                  className="shadow appearance-none bg-gray-700 border border-gray-600 rounded w-full py-2 px-3 text-gray-100 mb-3 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="text-black shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 mb-3 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   id="password"
                   name="password"
                   value={this.state.password}
@@ -178,6 +184,7 @@ class App extends React.Component {
           </div>
           <Routes>
             <Route path='/add-exercise' element={<AddExercise />} />
+            <Route path='/add-routine' element={<AddRoutine />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Router>
@@ -196,6 +203,7 @@ class App extends React.Component {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/add-exercise' element={<AddExercise />} />
+            <Route path='/add-routine' element={<AddRoutine />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>

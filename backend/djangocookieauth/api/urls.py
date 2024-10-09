@@ -10,5 +10,7 @@ urlpatterns = [
    path('add-calorie-entry/', views.add_calorie_entry, name="api_add_calorie_entry"),
    path('get-calorie-entries/', views.get_calorie_entries, name="api_get_calorie_entries"),
    path('add-exercise/', views.add_exercise, name="api_add_exercise"),
-   path('get-exercises/', views.get_exercises, name="api_get_exercises")
+   path('get-exercises/', views.get_exercises, name="api_get_exercises"),
+   path('add-routine/', views.add_routine, name="api_add_routine"),
+   path('get-routines/', views.get_routines, name="api_get_routines")
 ]

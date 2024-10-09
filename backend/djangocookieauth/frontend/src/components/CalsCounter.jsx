@@ -61,7 +61,7 @@ export const CalorieTracker = () => {
         <div className="bg-white shadow-md rounded-lg p-4 max-w-sm mx-auto">
             <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-700">Calories Today</h3>
-                <span className="text-2xl font-bold text-indigo-600">{totalcals ? <span>{totalcals}</span> : <span>2900</span>}</span>
+                <span className="text-2xl font-bold text-indigo-600">{totalcals ? <span>{totalcals}</span> : <span>0</span>}</span>
             </div>
             <form onSubmit={handleSubmit} className="flex items-center space-x-2">
                 <input

@@ -90,12 +90,12 @@ const AddExercise = () => {
   };
 
   return (
-    <div className="flex flex-col w-full min-h-screen">
+    <div className="flex flex-col w-full min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100">
       <Navbar />
-      <div className='m-8 bg-slate-100 p-2 rounded'>
-        <h2 className="text-2xl font-bold mb-5 text-black">Add New Exercise</h2>
+      <div className='m-8 p-4 rounded shadow-2xl'>
+        <h2 className="text-2xl font-bold mb-5 text-gray-800">Add New Exercise</h2>
         {error && <p className="text-red-500 mb-5">{error}</p>}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 ">
           <div>
             <label htmlFor="name" className="text-black block text-sm font-medium">Name</label>
             <input
@@ -150,7 +150,7 @@ const AddExercise = () => {
               value={formData.exercise_type}
               onChange={handleChange}
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1"
+              className="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1"
             >
               <option value="">Select Type</option>
               <option value="1">Strength</option>

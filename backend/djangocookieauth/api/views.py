@@ -10,14 +10,14 @@ from datetime import datetime
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db.models import F
-from django.db.models import Q
+from django.db.models import F, Q
+from django.db import transaction
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
 from django.views.decorators.http import require_GET, require_POST
 
 # Local imports
-from .models import CalorieEntry, Exercise
+from .models import CalorieEntry, Exercise, Routine
 
 @require_POST
 def login_view(request):
@@ -85,21 +85,30 @@ def add_calorie_entry(request):
         return JsonResponse({'detail': 'Please provide date and calories.'}, status=400)
 
     try:
-        date = datetime.strptime(date, '%Y-%m-%d').date()
+        entry_date = datetime.strptime(date, '%Y-%m-%d').date()
         calories = int(calories)
     except ValueError:
         return JsonResponse({'detail': 'Invalid date format or calories value.'}, status=400)
 
+    today = datetime.now().date()
+
     entry, created = CalorieEntry.objects.get_or_create(
         user=request.user,
-        date=date,
+        date=entry_date,
         defaults={'calories': 0}
     )
 
-    entry.calories = F('calories') + calories
-    entry.save()
+    if entry_date == today:
+        # If it's today, add the calories
+        entry.calories += calories
+    elif entry_date > today:
+        # If it's a future date, set the calories
+        entry.calories = calories
+    else:
+        # If it's a past date, don't allow modifications
+        return JsonResponse({'detail': 'Cannot modify past entries.'}, status=400)
 
-    entry.refresh_from_db()
+    entry.save()
 
     return JsonResponse({
         'id': entry.id,
@@ -186,3 +195,67 @@ def get_exercises(request):
         return JsonResponse(data, safe=False, status=200)
     except Exception as e:
         return JsonResponse({"error": "An error occurred while fetching exercises"}, status=500)
+
+@login_required
+@require_POST
+def add_routine(request):
+    try:
+        data = json.loads(request.body)
+        print(data)
+        user = request.user
+        name = data.get('name')
+        days = data.get('days', [])  # Expecting a list of days
+        description = data.get('description')
+        exercise_ids = data.get('exercises', [])  # Expecting a list of exercise IDs
+
+        if not all([name, days, description, exercise_ids]):
+            return JsonResponse({'detail': 'Missing required fields'}, status=400)
+
+        with transaction.atomic():
+            # Create the routine
+            routine = Routine.objects.create(
+                user=user,
+                name=name,
+                description=description,
+                day=', '.join(days)  # Join days into a single string
+            )
+
+            # Add exercises to the routine
+            exercises = Exercise.objects.filter(id__in=exercise_ids)
+            routine.exercises.add(*exercises)
+        
+
+        return JsonResponse({
+            'id': routine.id,
+            'name': routine.name,
+            'description': routine.description,
+            'days': days,
+            'exercises': list(exercises.values_list('id', flat=True))
+        }, status=201)
+
+    except json.JSONDecodeError:
+        return JsonResponse({'detail': 'Invalid JSON in request body'}, status=400)
+    except Exception as e:
+        # Log the exception here
+        print(f"Unexpected error in add_routine: {str(e)}")
+        return JsonResponse({'detail': 'An unexpected error occurred'}, status=500)
+
+@login_required
+@require_GET
+def get_routines(request):
+    try:
+        routines = Routine.objects.filter(user=request.user)
+
+        data = [{
+            'id': routine.id,
+            'name': routine.name,
+            'description': routine.description,
+            'days': routine.day.split(', '),
+            'exercises': list(routine.exercises.values('id', 'name'))
+        } for routine in routines]
+        
+        return JsonResponse(data, safe=False, status=200)
+    except Exception as e:
+        # Log the exception here
+        print(f"Unexpected error in get_routines: {str(e)}")
+        return JsonResponse({"error": "An error occurred while fetching routines"}, status=500)
