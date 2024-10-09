@@ -251,7 +251,7 @@ def get_routines(request):
             'name': routine.name,
             'description': routine.description,
             'days': routine.day.split(', '),
-            'exercises': list(routine.exercises.values('id', 'name', 'description'))
+            'exercises': list(routine.exercises.values('id', 'name', 'description', 'url'))
         } for routine in routines]
         
         return JsonResponse(data, safe=False, status=200)

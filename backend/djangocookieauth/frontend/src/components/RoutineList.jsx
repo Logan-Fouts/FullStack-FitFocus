@@ -8,7 +8,7 @@ const ExerciseModal = ({ isOpen, onClose, exercise }) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-lg p-6 max-w-md w-full">
                 <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-semibold text-gray-700">{exercise.name}</h3>
+                    <a href={exercise.url} className="text-lg font-semibold text-gray-700">{exercise.name}</a>
                     <button onClick={onClose} className="text-gray-800 hover:text-gray-500 p-2 m-2">
                         <X size={20} />
                     </button>
